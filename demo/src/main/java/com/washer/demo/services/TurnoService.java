@@ -50,4 +50,30 @@ public class TurnoService {
         turno.setEstado(estado);
         return turnoRepository.save(turno);
     }
+
+    public Turno updateTurno(Long id, Turno turno) {
+        // Verifica si el turno existe
+        Turno existingTurno = turnoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + id));
+
+        // Actualiza los campos necesarios
+        if (turno.getFechaHora() != null) {
+            existingTurno.setFechaHora(turno.getFechaHora());
+        }
+        if (turno.getEstado() != null) {
+            existingTurno.setEstado(turno.getEstado());
+        }
+        if (turno.getTipoServicio() != null) {
+            existingTurno.setTipoServicio(turno.getTipoServicio());
+        }
+        if (turno.getVehiculo() != null && turno.getVehiculo().getId() != null) {
+            Vehiculo vehiculo = vehiculoRepository.findById(turno.getVehiculo().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado con ID: " + turno.getVehiculo().getId()));
+            existingTurno.setVehiculo(vehiculo);
+        }
+
+        // Guarda los cambios
+        return turnoRepository.save(existingTurno);
+    }
+
 }

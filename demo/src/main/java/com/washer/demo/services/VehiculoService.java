@@ -43,4 +43,30 @@ public class VehiculoService {
         }
         vehiculoRepository.deleteById(id);
     }
+
+    public Vehiculo updateVehiculo(Long id, Vehiculo vehiculo) {
+        // Verifica si el vehículo existe
+        Vehiculo existingVehiculo = vehiculoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado con ID: " + id));
+
+        // Actualiza los campos necesarios
+        if (vehiculo.getModelo() != null) {
+            existingVehiculo.setModelo(vehiculo.getModelo());
+        }
+        if (vehiculo.getMatricula() != null) {
+            existingVehiculo.setMatricula(vehiculo.getMatricula());
+        }
+        if (vehiculo.getTipo() != null) {
+            existingVehiculo.setTipo(vehiculo.getTipo());
+        }
+        if (vehiculo.getCliente() != null && vehiculo.getCliente().getId() != null) {
+            Cliente cliente = clienteRepository.findById(vehiculo.getCliente().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + vehiculo.getCliente().getId()));
+            existingVehiculo.setCliente(cliente);
+        }
+
+        // Guarda los cambios
+        return vehiculoRepository.save(existingVehiculo);
+    }
+
 }

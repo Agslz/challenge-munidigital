@@ -50,4 +50,30 @@ public class CobroService {
         turno.setEstado(estado);
         return turnoRepository.save(turno);
     }
+
+    public Cobro updateCobro(Long id, Cobro cobro) {
+        // Verifica si el cobro existe
+        Cobro existingCobro = cobroRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cobro no encontrado con ID: " + id));
+
+        // Actualiza los campos necesarios
+        if (cobro.getMonto() != null) {
+            existingCobro.setMonto(cobro.getMonto());
+        }
+        if (cobro.getFecha() != null) {
+            existingCobro.setFecha(cobro.getFecha());
+        }
+        if (cobro.getTurno() != null && cobro.getTurno().getId() != null) {
+            Turno turno = turnoRepository.findById(cobro.getTurno().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + cobro.getTurno().getId()));
+            if (!"completado".equals(turno.getEstado())) {
+                throw new IllegalArgumentException("El turno debe estar completado para asociarlo al cobro.");
+            }
+            existingCobro.setTurno(turno);
+        }
+
+        // Guarda los cambios
+        return cobroRepository.save(existingCobro);
+    }
+
 }

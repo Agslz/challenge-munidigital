@@ -67,4 +67,15 @@ public class CobroController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cobro> updateCobro(@PathVariable Long id, @RequestBody Cobro cobro) {
+        try {
+            Cobro updatedCobro = cobroService.updateCobro(id, cobro);
+            return ResponseEntity.ok(updatedCobro);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

@@ -48,4 +48,15 @@ public class VehiculoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Vehiculo> updateVehiculo(@PathVariable Long id, @RequestBody Vehiculo vehiculo) {
+        try {
+            Vehiculo updatedVehiculo = vehiculoService.updateVehiculo(id, vehiculo);
+            return ResponseEntity.ok(updatedVehiculo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

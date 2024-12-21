@@ -36,4 +36,25 @@ public class ClienteService {
         }
         clienteRepository.deleteById(id);
     }
+
+    public Cliente updateCliente(Long id, Cliente cliente) {
+        // Verifica si el cliente existe
+        Cliente existingCliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
+
+        // Actualiza los campos necesarios
+        if (cliente.getNombre() != null) {
+            existingCliente.setNombre(cliente.getNombre());
+        }
+        if (cliente.getCorreoElectronico() != null) {
+            existingCliente.setCorreoElectronico(cliente.getCorreoElectronico());
+        }
+        if (cliente.getTelefono() != null) {
+            existingCliente.setTelefono(cliente.getTelefono());
+        }
+
+        // Guarda los cambios
+        return clienteRepository.save(existingCliente);
+    }
+
 }

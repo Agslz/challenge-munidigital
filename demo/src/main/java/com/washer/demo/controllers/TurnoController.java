@@ -58,4 +58,15 @@ public class TurnoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Turno> updateTurno(@PathVariable Long id, @RequestBody Turno turno) {
+        try {
+            Turno updatedTurno = turnoService.updateTurno(id, turno);
+            return ResponseEntity.ok(updatedTurno);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

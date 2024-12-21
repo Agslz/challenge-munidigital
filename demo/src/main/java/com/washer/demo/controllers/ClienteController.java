@@ -44,4 +44,15 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
+        try {
+            Cliente updatedCliente = clienteService.updateCliente(id, cliente);
+            return ResponseEntity.ok(updatedCliente);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
