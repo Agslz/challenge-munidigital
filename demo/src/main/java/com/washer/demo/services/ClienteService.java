@@ -6,20 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class ClienteService {
+
     @Autowired
     private ClienteRepository clienteRepository;
 
     public Cliente saveCliente(Cliente cliente) {
+        if (cliente.getNombre() == null || cliente.getCorreoElectronico() == null || cliente.getTelefono() == null) {
+            throw new IllegalArgumentException("Todos los campos del cliente son obligatorios.");
+        }
         return clienteRepository.save(cliente);
     }
 
-    public Optional<Cliente> getCliente(Long id) {
-        return clienteRepository.findById(id);
+    public Cliente getCliente(Long id) {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
     }
 
     public List<Cliente> getAllClientes() {
@@ -27,6 +31,9 @@ public class ClienteService {
     }
 
     public void deleteCliente(Long id) {
+        if (!clienteRepository.existsById(id)) {
+            throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
+        }
         clienteRepository.deleteById(id);
     }
 }

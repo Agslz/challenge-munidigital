@@ -12,19 +12,26 @@ import java.util.List;
 @RequestMapping("/api/vehiculos")
 public class VehiculoController {
     @Autowired
-
     private VehiculoService vehiculoService;
 
     @PostMapping
-    public ResponseEntity<Vehiculo> createVehiculo(@RequestBody Vehiculo vehiculo) {
-        return ResponseEntity.ok(vehiculoService.saveVehiculo(vehiculo));
+    public ResponseEntity<Vehiculo> createVehiculo(@RequestBody Vehiculo vehiculo, @RequestParam Long clienteId) {
+        try {
+            Vehiculo savedVehiculo = vehiculoService.saveVehiculo(vehiculo, clienteId);
+            return ResponseEntity.ok(savedVehiculo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Vehiculo> getVehiculoById(@PathVariable Long id) {
-        return vehiculoService.getVehiculo(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            Vehiculo vehiculo = vehiculoService.getVehiculo(id);
+            return ResponseEntity.ok(vehiculo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping
@@ -34,8 +41,11 @@ public class VehiculoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVehiculo(@PathVariable Long id) {
-        vehiculoService.deleteVehiculo(id);
-        return ResponseEntity.ok().build();
+        try {
+            vehiculoService.deleteVehiculo(id);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
-

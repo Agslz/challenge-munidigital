@@ -16,14 +16,22 @@ public class TurnoController {
 
     @PostMapping
     public ResponseEntity<Turno> createTurno(@RequestBody Turno turno) {
-        return ResponseEntity.ok(turnoService.saveTurno(turno));
+        try {
+            Turno savedTurno = turnoService.saveTurno(turno);
+            return ResponseEntity.ok(savedTurno);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Turno> getTurnoById(@PathVariable Long id) {
-        return turnoService.getTurno(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            Turno turno = turnoService.getTurno(id);
+            return ResponseEntity.ok(turno);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping
@@ -33,7 +41,21 @@ public class TurnoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTurno(@PathVariable Long id) {
-        turnoService.deleteTurno(id);
-        return ResponseEntity.ok().build();
+        try {
+            turnoService.deleteTurno(id);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<Void> updateEstadoTurno(@PathVariable Long id, @RequestParam String estado) {
+        try {
+            turnoService.updateEstadoTurno(id, estado);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
