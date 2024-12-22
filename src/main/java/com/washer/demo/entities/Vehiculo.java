@@ -3,6 +3,7 @@ package com.washer.demo.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -20,12 +21,21 @@ import java.util.Set;
 @Builder
 @Entity
 public class Vehiculo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // Identificador único para el vehículo
 
+    @NotBlank(message = "El modelo no puede estar vacío.")
+    @Size(max = 50, message = "El modelo no puede exceder los 50 caracteres.")
     private String modelo;  // Modelo del vehículo
+
+    @NotBlank(message = "La matrícula no puede estar vacía.")
+    @Pattern(regexp = "^[A-Z0-9]{1,10}$", message = "La matrícula debe contener entre 1 y 10 caracteres alfanuméricos en mayúsculas.")
     private String matricula;  // Matrícula del vehículo
+
+    @NotBlank(message = "El tipo de vehículo no puede estar vacío.")
+    @Size(max = 30, message = "El tipo de vehículo no puede exceder los 30 caracteres.")
     private String tipo;  // Tipo de vehículo (p.ej., sedan, SUV)
 
     /**
@@ -33,7 +43,8 @@ public class Vehiculo {
      * Cada vehículo está asociado a un único cliente.
      */
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "cliente_id", nullable = false)
+    @NotNull(message = "El cliente asociado no puede ser nulo.")
     @JsonBackReference  // Previene la serialización de JSON para evitar la recursión infinita
     private Cliente cliente;
 
