@@ -7,6 +7,7 @@ import com.washer.demo.repositories.VehiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /**
@@ -16,8 +17,13 @@ import java.util.List;
 @Service
 @Transactional
 public class VehiculoService {
+
+    private static final String VEHICULO_NO_ENCONTRADO = "Vehículo no encontrado con ID: ";
+    private static final String CLIENTE_NO_ENCONTRADO = "Cliente no encontrado con ID: ";
+
     @Autowired
     private VehiculoRepository vehiculoRepository;
+
     @Autowired
     private ClienteRepository clienteRepository;
 
@@ -26,14 +32,9 @@ public class VehiculoService {
      * @param vehiculo El vehículo a guardar.
      * @param clienteId El ID del cliente asociado al vehículo.
      * @return El vehículo guardado con su ID asignado.
-     * @throws IllegalArgumentException Si algún campo obligatorio del vehículo está vacío o si el cliente no se encuentra.
      */
     public Vehiculo saveVehiculo(Vehiculo vehiculo, Long clienteId) {
-        if (vehiculo.getModelo() == null || vehiculo.getMatricula() == null || vehiculo.getTipo() == null) {
-            throw new IllegalArgumentException("Todos los campos del vehículo son obligatorios.");
-        }
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
+        Cliente cliente = validarClienteExistente(clienteId);
         vehiculo.setCliente(cliente);
         return vehiculoRepository.save(vehiculo);
     }
@@ -42,11 +43,9 @@ public class VehiculoService {
      * Recupera un vehículo por su ID.
      * @param id El ID del vehículo a buscar.
      * @return El vehículo encontrado.
-     * @throws IllegalArgumentException Si no se encuentra un vehículo con el ID proporcionado.
      */
     public Vehiculo getVehiculo(Long id) {
-        return vehiculoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado con ID: " + id));
+        return validarVehiculoExistente(id);
     }
 
     /**
@@ -60,13 +59,10 @@ public class VehiculoService {
     /**
      * Elimina un vehículo por su ID.
      * @param id El ID del vehículo a eliminar.
-     * @throws IllegalArgumentException Si no existe un vehículo con ese ID.
      */
     public void deleteVehiculo(Long id) {
-        if (!vehiculoRepository.existsById(id)) {
-            throw new IllegalArgumentException("Vehículo no encontrado con ID: " + id);
-        }
-        vehiculoRepository.deleteById(id);
+        Vehiculo vehiculo = validarVehiculoExistente(id);
+        vehiculoRepository.delete(vehiculo);
     }
 
     /**
@@ -74,11 +70,9 @@ public class VehiculoService {
      * @param id El ID del vehículo a actualizar.
      * @param vehiculo Los nuevos datos del vehículo.
      * @return El vehículo actualizado.
-     * @throws IllegalArgumentException Si no se encuentra un vehículo con el ID proporcionado o si el cliente asociado no existe.
      */
     public Vehiculo updateVehiculo(Long id, Vehiculo vehiculo) {
-        Vehiculo existingVehiculo = vehiculoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado con ID: " + id));
+        Vehiculo existingVehiculo = validarVehiculoExistente(id);
 
         if (vehiculo.getModelo() != null) {
             existingVehiculo.setModelo(vehiculo.getModelo());
@@ -90,12 +84,32 @@ public class VehiculoService {
             existingVehiculo.setTipo(vehiculo.getTipo());
         }
         if (vehiculo.getCliente() != null && vehiculo.getCliente().getId() != null) {
-            Cliente cliente = clienteRepository.findById(vehiculo.getCliente().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + vehiculo.getCliente().getId()));
+            Cliente cliente = validarClienteExistente(vehiculo.getCliente().getId());
             existingVehiculo.setCliente(cliente);
         }
 
         return vehiculoRepository.save(existingVehiculo);
     }
 
+    /**
+     * Valida la existencia de un cliente por su ID.
+     * @param clienteId El ID del cliente a validar.
+     * @return El cliente encontrado.
+     * @throws IllegalArgumentException Si no se encuentra un cliente con el ID proporcionado.
+     */
+    private Cliente validarClienteExistente(Long clienteId) {
+        return clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new IllegalArgumentException(CLIENTE_NO_ENCONTRADO + clienteId));
+    }
+
+    /**
+     * Valida la existencia de un vehículo por su ID.
+     * @param vehiculoId El ID del vehículo a validar.
+     * @return El vehículo encontrado.
+     * @throws IllegalArgumentException Si no se encuentra un vehículo con el ID proporcionado.
+     */
+    private Vehiculo validarVehiculoExistente(Long vehiculoId) {
+        return vehiculoRepository.findById(vehiculoId)
+                .orElseThrow(() -> new IllegalArgumentException(VEHICULO_NO_ENCONTRADO + vehiculoId));
+    }
 }

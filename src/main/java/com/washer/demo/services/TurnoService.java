@@ -17,8 +17,10 @@ import java.util.List;
 @Service
 @Transactional
 public class TurnoService {
+
     @Autowired
     private TurnoRepository turnoRepository;
+
     @Autowired
     private VehiculoRepository vehiculoRepository;
 
@@ -26,14 +28,9 @@ public class TurnoService {
      * Guarda un turno en la base de datos.
      * @param turno El turno a guardar.
      * @return El turno guardado con su ID asignado.
-     * @throws IllegalArgumentException Si el vehículo asociado al turno no existe o no está especificado.
      */
     public Turno saveTurno(Turno turno) {
-        if (turno.getVehiculo() == null || turno.getVehiculo().getId() == null) {
-            throw new IllegalArgumentException("El vehículo asociado al turno es obligatorio.");
-        }
-        Vehiculo vehiculo = vehiculoRepository.findById(turno.getVehiculo().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado"));
+        Vehiculo vehiculo = validarVehiculoExistente(turno.getVehiculo().getId());
         turno.setVehiculo(vehiculo);
         return turnoRepository.save(turno);
     }
@@ -63,10 +60,9 @@ public class TurnoService {
      * @throws IllegalArgumentException Si no existe un turno con ese ID.
      */
     public void deleteTurno(Long id) {
-        if (!turnoRepository.existsById(id)) {
-            throw new IllegalArgumentException("Turno no encontrado con ID: " + id);
-        }
-        turnoRepository.deleteById(id);
+        Turno turno = turnoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + id));
+        turnoRepository.delete(turno);
     }
 
     /**
@@ -104,12 +100,21 @@ public class TurnoService {
             existingTurno.setTipoServicio(turno.getTipoServicio());
         }
         if (turno.getVehiculo() != null && turno.getVehiculo().getId() != null) {
-            Vehiculo vehiculo = vehiculoRepository.findById(turno.getVehiculo().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado con ID: " + turno.getVehiculo().getId()));
+            Vehiculo vehiculo = validarVehiculoExistente(turno.getVehiculo().getId());
             existingTurno.setVehiculo(vehiculo);
         }
 
         return turnoRepository.save(existingTurno);
     }
 
+    /**
+     * Valida la existencia de un vehículo por su ID.
+     * @param vehiculoId El ID del vehículo a validar.
+     * @return El vehículo encontrado.
+     * @throws IllegalArgumentException Si no se encuentra el vehículo con el ID proporcionado.
+     */
+    private Vehiculo validarVehiculoExistente(Long vehiculoId) {
+        return vehiculoRepository.findById(vehiculoId)
+                .orElseThrow(() -> new IllegalArgumentException("Vehículo no encontrado con ID: " + vehiculoId));
+    }
 }

@@ -1,9 +1,9 @@
 package com.washer.demo.controllers;
 
 import com.washer.demo.entities.Cobro;
-import com.washer.demo.entities.Turno;
 import com.washer.demo.services.CobroService;
 import com.washer.demo.services.TurnoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,32 +26,24 @@ public class CobroController {
 
     /**
      * Crea un nuevo cobro.
-     * @param cobro Datos del cobro a crear.
-     * @return ResponseEntity con el cobro creado o un estado de error si hay datos inválidos.
+     * @param cobro Datos validados del cobro a crear.
+     * @return ResponseEntity con el cobro creado.
      */
     @PostMapping
-    public ResponseEntity<Cobro> createCobro(@RequestBody Cobro cobro) {
-        try {
-            Cobro savedCobro = cobroService.saveCobro(cobro);
-            return ResponseEntity.ok(savedCobro);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<Cobro> createCobro(@Valid @RequestBody Cobro cobro) {
+        Cobro savedCobro = cobroService.saveCobro(cobro);
+        return ResponseEntity.status(201).body(savedCobro);
     }
 
     /**
      * Obtiene un cobro por su ID.
      * @param id ID del cobro a buscar.
-     * @return ResponseEntity con el cobro encontrado o un estado de no encontrado.
+     * @return ResponseEntity con el cobro encontrado.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Cobro> getCobroById(@PathVariable Long id) {
-        try {
-            Cobro cobro = cobroService.getCobro(id);
-            return ResponseEntity.ok(cobro);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        Cobro cobro = cobroService.getCobro(id);
+        return ResponseEntity.ok(cobro);
     }
 
     /**
@@ -62,23 +54,18 @@ public class CobroController {
      */
     @PutMapping("/{id}/estado")
     public ResponseEntity<Void> updateEstadoTurno(@PathVariable Long id, @RequestParam String estado) {
-        try {
-            Turno turno = turnoService.getTurno(id);
-            turno.setEstado(estado);
-            turnoService.saveTurno(turno);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        turnoService.updateEstadoTurno(id, estado);
+        return ResponseEntity.noContent().build();
     }
 
     /**
      * Obtiene una lista de todos los cobros.
-     * @return Lista de cobros.
+     * @return ResponseEntity con la lista de cobros.
      */
     @GetMapping
-    public List<Cobro> getAllCobros() {
-        return cobroService.getAllCobros();
+    public ResponseEntity<List<Cobro>> getAllCobros() {
+        List<Cobro> cobros = cobroService.getAllCobros();
+        return ResponseEntity.ok(cobros);
     }
 
     /**
@@ -88,28 +75,19 @@ public class CobroController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCobro(@PathVariable Long id) {
-        try {
-            cobroService.deleteCobro(id);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        cobroService.deleteCobro(id);
+        return ResponseEntity.noContent().build();
     }
 
     /**
      * Actualiza un cobro existente.
      * @param id ID del cobro a actualizar.
-     * @param cobro Datos actualizados del cobro.
-     * @return ResponseEntity con el cobro actualizado o un estado de no encontrado.
+     * @param cobro Datos validados del cobro.
+     * @return ResponseEntity con el cobro actualizado.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Cobro> updateCobro(@PathVariable Long id, @RequestBody Cobro cobro) {
-        try {
-            Cobro updatedCobro = cobroService.updateCobro(id, cobro);
-            return ResponseEntity.ok(updatedCobro);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Cobro> updateCobro(@PathVariable Long id, @Valid @RequestBody Cobro cobro) {
+        Cobro updatedCobro = cobroService.updateCobro(id, cobro);
+        return ResponseEntity.ok(updatedCobro);
     }
-
 }

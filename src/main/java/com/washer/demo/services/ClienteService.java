@@ -22,12 +22,9 @@ public class ClienteService {
      * Guarda un cliente en la base de datos.
      * @param cliente El cliente a guardar.
      * @return El cliente guardado con su ID asignado.
-     * @throws IllegalArgumentException Si algún campo obligatorio del cliente está vacío.
      */
     public Cliente saveCliente(Cliente cliente) {
-        if (cliente.getNombre() == null || cliente.getCorreoElectronico() == null || cliente.getTelefono() == null) {
-            throw new IllegalArgumentException("Todos los campos del cliente son obligatorios.");
-        }
+        // Validación de negocio adicional si es necesario
         return clienteRepository.save(cliente);
     }
 
@@ -56,10 +53,10 @@ public class ClienteService {
      * @throws IllegalArgumentException Si no existe un cliente con ese ID.
      */
     public void deleteCliente(Long id) {
-        if (!clienteRepository.existsById(id)) {
-            throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
-        }
-        clienteRepository.deleteById(id);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
+        // Si hay lógica adicional (e.g., verificar dependencias antes de eliminar), agregar aquí
+        clienteRepository.delete(cliente);
     }
 
     /**
@@ -85,5 +82,4 @@ public class ClienteService {
 
         return clienteRepository.save(existingCliente);
     }
-
 }
