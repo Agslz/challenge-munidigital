@@ -10,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Servicio para gestionar operaciones CRUD en la entidad Turno.
+ * Este servicio encapsula la lógica de negocio para el manejo de turnos, incluyendo la validación de la asociación con vehículos.
+ */
 @Service
 @Transactional
 public class TurnoService {
@@ -18,6 +22,12 @@ public class TurnoService {
     @Autowired
     private VehiculoRepository vehiculoRepository;
 
+    /**
+     * Guarda un turno en la base de datos.
+     * @param turno El turno a guardar.
+     * @return El turno guardado con su ID asignado.
+     * @throws IllegalArgumentException Si el vehículo asociado al turno no existe o no está especificado.
+     */
     public Turno saveTurno(Turno turno) {
         if (turno.getVehiculo() == null || turno.getVehiculo().getId() == null) {
             throw new IllegalArgumentException("El vehículo asociado al turno es obligatorio.");
@@ -28,15 +38,30 @@ public class TurnoService {
         return turnoRepository.save(turno);
     }
 
+    /**
+     * Recupera un turno por su ID.
+     * @param id El ID del turno a buscar.
+     * @return El turno encontrado.
+     * @throws IllegalArgumentException Si no se encuentra un turno con el ID proporcionado.
+     */
     public Turno getTurno(Long id) {
         return turnoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + id));
     }
 
+    /**
+     * Obtiene una lista de todos los turnos.
+     * @return Una lista de turnos.
+     */
     public List<Turno> getAllTurnos() {
         return turnoRepository.findAll();
     }
 
+    /**
+     * Elimina un turno por su ID.
+     * @param id El ID del turno a eliminar.
+     * @throws IllegalArgumentException Si no existe un turno con ese ID.
+     */
     public void deleteTurno(Long id) {
         if (!turnoRepository.existsById(id)) {
             throw new IllegalArgumentException("Turno no encontrado con ID: " + id);
@@ -44,6 +69,13 @@ public class TurnoService {
         turnoRepository.deleteById(id);
     }
 
+    /**
+     * Actualiza el estado de un turno existente.
+     * @param id El ID del turno a actualizar.
+     * @param estado El nuevo estado del turno.
+     * @return El turno actualizado.
+     * @throws IllegalArgumentException Si no se encuentra un turno con el ID proporcionado.
+     */
     public Turno updateEstadoTurno(Long id, String estado) {
         Turno turno = turnoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + id));
@@ -51,12 +83,17 @@ public class TurnoService {
         return turnoRepository.save(turno);
     }
 
+    /**
+     * Actualiza la información de un turno existente.
+     * @param id El ID del turno a actualizar.
+     * @param turno Los nuevos datos del turno.
+     * @return El turno actualizado.
+     * @throws IllegalArgumentException Si no se encuentra un turno con el ID proporcionado o si el vehículo asociado no existe.
+     */
     public Turno updateTurno(Long id, Turno turno) {
-        // Verifica si el turno existe
         Turno existingTurno = turnoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + id));
 
-        // Actualiza los campos necesarios
         if (turno.getFechaHora() != null) {
             existingTurno.setFechaHora(turno.getFechaHora());
         }
@@ -72,7 +109,6 @@ public class TurnoService {
             existingTurno.setVehiculo(vehiculo);
         }
 
-        // Guarda los cambios
         return turnoRepository.save(existingTurno);
     }
 

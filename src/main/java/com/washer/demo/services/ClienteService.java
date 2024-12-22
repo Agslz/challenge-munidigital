@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
+/**
+ * Servicio para gestionar operaciones CRUD en la entidad Cliente.
+ * Este servicio encapsula la lógica de negocio para el manejo de clientes.
+ */
 @Service
 @Transactional
 public class ClienteService {
@@ -14,6 +18,12 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    /**
+     * Guarda un cliente en la base de datos.
+     * @param cliente El cliente a guardar.
+     * @return El cliente guardado con su ID asignado.
+     * @throws IllegalArgumentException Si algún campo obligatorio del cliente está vacío.
+     */
     public Cliente saveCliente(Cliente cliente) {
         if (cliente.getNombre() == null || cliente.getCorreoElectronico() == null || cliente.getTelefono() == null) {
             throw new IllegalArgumentException("Todos los campos del cliente son obligatorios.");
@@ -21,15 +31,30 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
+    /**
+     * Recupera un cliente por su ID.
+     * @param id El ID del cliente a buscar.
+     * @return El cliente encontrado.
+     * @throws IllegalArgumentException Si no se encuentra un cliente con el ID proporcionado.
+     */
     public Cliente getCliente(Long id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
     }
 
+    /**
+     * Obtiene una lista de todos los clientes.
+     * @return Una lista de clientes.
+     */
     public List<Cliente> getAllClientes() {
         return clienteRepository.findAll();
     }
 
+    /**
+     * Elimina un cliente por su ID.
+     * @param id El ID del cliente a eliminar.
+     * @throws IllegalArgumentException Si no existe un cliente con ese ID.
+     */
     public void deleteCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
             throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
@@ -37,12 +62,17 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
+    /**
+     * Actualiza la información de un cliente existente.
+     * @param id El ID del cliente a actualizar.
+     * @param cliente Los nuevos datos del cliente.
+     * @return El cliente actualizado.
+     * @throws IllegalArgumentException Si no se encuentra un cliente con el ID proporcionado.
+     */
     public Cliente updateCliente(Long id, Cliente cliente) {
-        // Verifica si el cliente existe
         Cliente existingCliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
 
-        // Actualiza los campos necesarios
         if (cliente.getNombre() != null) {
             existingCliente.setNombre(cliente.getNombre());
         }
@@ -53,7 +83,6 @@ public class ClienteService {
             existingCliente.setTelefono(cliente.getTelefono());
         }
 
-        // Guarda los cambios
         return clienteRepository.save(existingCliente);
     }
 
