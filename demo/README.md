@@ -76,7 +76,7 @@ El siguiente diagrama ilustra las relaciones entre las entidades principales de 
 **Para detener y remover los contenedores, utiliza el siguiente comando:**
     
 ```bash
-   docker compose down
+docker compose down
 ```
 
 # API Endpoints
