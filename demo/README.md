@@ -49,6 +49,36 @@ El siguiente diagrama ilustra las relaciones entre las entidades principales de 
 
 ![Diagrama de Clases](/images/UMLWasher.png)
 
+## Instrucciones para ejecutar el proyecto
+
+1. **Clonar el repositorio**:
+    ```bash
+    git clone https://github.com/Agslz/challenge-munidigital
+    ```
+
+2. **Dar permisos al script de inicio**:
+    ```bash
+    chmod +x start.sh
+    ```
+
+3. **Ejecutar el proyecto**:
+    ```bash
+    ./start.sh
+    ```
+
+   Este script realizará las siguientes acciones:
+   - Construirá el backend utilizando Maven.
+   - Configurará e iniciará los contenedores de MySQL y del backend con Docker Compose.
+
+
+### El backend estará disponible en: http://localhost:8080/.
+
+**Para detener y remover los contenedores, utiliza el siguiente comando:**
+    
+```bash
+   docker compose down
+```
+
 # API Endpoints
 
 | Método   | Endpoint                | Descripción                                   | Parámetros                                                                                    | Ejemplo CURL                                                                                                                                                                                           |
