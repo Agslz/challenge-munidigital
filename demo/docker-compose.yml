@@ -2,15 +2,31 @@ version: '3.8'
 services:
   db:
     image: mysql:8.0
+    container_name: mysql-lavadero
+    restart: always
     environment:
-      MYSQL_DATABASE: 'lavadero'
-      MYSQL_USER: 'usuario'
-      MYSQL_PASSWORD: 'contrasena'
-      MYSQL_ROOT_PASSWORD: 'rootpassword'
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: lavadero
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: contrasena
     ports:
       - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-app
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/lavadero?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: usuario
+      SPRING_DATASOURCE_PASSWORD: contrasena
+    ports:
+      - "8080:8080"
 
 volumes:
   db-data:
