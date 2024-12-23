@@ -5,6 +5,16 @@ command_exists() {
     type "$1" &> /dev/null
 }
 
+# Función para determinar el sistema operativo
+os_detect() {
+    case "$(uname -s)" in
+       Darwin) echo 'macOS' ;;
+       Linux) echo 'Linux' ;;
+       CYGWIN*|MINGW32*|MSYS*|MINGW*) echo 'Windows' ;;
+       *) echo 'Other' ;;
+    esac
+}
+
 # Detiene todos los contenedores en ejecución y elimina los contenedores, las redes, los volúmenes y las imágenes creadas
 if command_exists docker-compose; then
     docker-compose down
