@@ -49,8 +49,6 @@ El siguiente diagrama ilustra las relaciones entre las entidades principales de 
 
 ![Diagrama de Clases](/images/UMLWasher.png)
 
-> **⚠️Precaución:** **El script `start.sh` No es compatible con maquinas Windows. Por favor correrlo en una maquina linux o si desean probarlo tan solamente hay que crear una base de datos y configurar el `application.properties` con la base de datos creada**
-
 ## Instrucciones para ejecutar el proyecto
 
 1. **Clonar el repositorio**:
