@@ -1,5 +1,6 @@
 package com.washer.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -35,5 +36,6 @@ public class Cliente {
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @JsonIgnore  // Previene que la lista de vehículos sea incluida en la serialización JSON
     private Set<Vehiculo> vehiculos;
 }

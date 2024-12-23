@@ -1,6 +1,7 @@
 package com.washer.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -38,8 +39,8 @@ public class Cobro {
      * El cobro está directamente relacionado con un turno específico.
      */
     @OneToOne
-    @JoinColumn(name = "turno_id", nullable = false)
-    @NotNull(message = "El turno asociado no puede ser nulo.")
+    @JoinColumn(name = "turno_id")
     @JsonBackReference  // Previene la serialización de JSON para evitar la recursión infinita
+    @JsonIgnore  // Previene que la lista de turnos sea incluida en la serialización JSON
     private Turno turno;
 }

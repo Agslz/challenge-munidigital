@@ -1,5 +1,6 @@
 package com.washer.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -43,9 +44,9 @@ public class Vehiculo {
      * Cada vehículo está asociado a un único cliente.
      */
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
-    @NotNull(message = "El cliente asociado no puede ser nulo.")
+    @JoinColumn(name = "cliente_id")
     @JsonBackReference  // Previene la serialización de JSON para evitar la recursión infinita
+    @JsonIgnore  // Previene que la lista de clientes sea incluida en la serialización JSON
     private Cliente cliente;
 
     /**
@@ -54,5 +55,6 @@ public class Vehiculo {
      */
     @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference  // Administra la serialización de JSON para incluir turnos de manera adecuada
+    @JsonIgnore  // Previene que la lista de turnos sea incluida en la serialización JSON
     private Set<Turno> turnos;
 }

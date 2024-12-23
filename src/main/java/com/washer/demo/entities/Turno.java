@@ -42,8 +42,7 @@ public class Turno {
      * Cada turno está asociado a un único vehículo.
      */
     @ManyToOne
-    @JoinColumn(name = "vehiculo_id", nullable = false)
-    @NotNull(message = "El vehículo asociado no puede ser nulo.")
+    @JoinColumn(name = "vehiculo_id")
     @JsonBackReference  // Previene la serialización de JSON para evitar la recursión infinita
     private Vehiculo vehiculo;
 }
