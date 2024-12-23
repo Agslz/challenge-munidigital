@@ -30,9 +30,7 @@ public class Cobro {
     @DecimalMin(value = "0.01", message = "El monto debe ser mayor a 0.")
     private Double monto;  // Monto del cobro
 
-    @NotNull(message = "La fecha no puede ser nula.")
-    @PastOrPresent(message = "La fecha debe ser en el pasado o el presente.")
-    private Date fecha;  // Fecha en la que se realizó el cobro
+    private Date fecha;  // Fecha en la que se realizó el cobro (sin validaciones)
 
     /**
      * Relación uno a uno con la entidad Turno.

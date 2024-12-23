@@ -25,9 +25,7 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // Identificador único para el turno
 
-    @NotNull(message = "La fecha y hora no pueden ser nulas.")
-    @FutureOrPresent(message = "La fecha y hora del turno deben ser en el presente o futuro.")
-    private Date fechaHora;  // Fecha y hora programadas para el turno
+    private Date fechaHora;  // Fecha y hora programadas para el turno (sin validaciones)
 
     @NotBlank(message = "El estado del turno no puede estar vacío.")
     @Pattern(regexp = "^(programado|completado|cancelado)$", message = "El estado debe ser: programado, completado o cancelado.")

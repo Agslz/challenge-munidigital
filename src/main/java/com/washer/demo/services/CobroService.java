@@ -18,8 +18,6 @@ import java.util.List;
 @Transactional
 public class CobroService {
 
-    private static final String ESTADO_COMPLETADO = "completado";
-
     @Autowired
     private CobroRepository cobroRepository;
 
@@ -30,11 +28,9 @@ public class CobroService {
      * Guarda un cobro en la base de datos.
      * @param cobro El cobro a guardar.
      * @return El cobro guardado con su ID asignado.
-     * @throws IllegalArgumentException Si el turno asociado no está completado o no se encuentra.
      */
     public Cobro saveCobro(Cobro cobro) {
-        Turno turno = validarTurnoCompletado(cobro.getTurno().getId());
-        cobro.setTurno(turno);
+        // Se elimina la validación del turno
         return cobroRepository.save(cobro);
     }
 
@@ -60,7 +56,6 @@ public class CobroService {
     /**
      * Elimina un cobro por su ID.
      * @param id El ID del cobro a eliminar.
-     * @throws IllegalArgumentException Si no existe un cobro con ese ID.
      */
     public void deleteCobro(Long id) {
         Cobro cobro = cobroRepository.findById(id)
@@ -69,25 +64,10 @@ public class CobroService {
     }
 
     /**
-     * Actualiza el estado de un turno.
-     * @param turnoId El ID del turno a actualizar.
-     * @param estado El nuevo estado del turno.
-     * @return El turno actualizado.
-     * @throws IllegalArgumentException Si no se encuentra un turno con el ID proporcionado.
-     */
-    public Turno updateEstadoTurno(Long turnoId, String estado) {
-        Turno turno = turnoRepository.findById(turnoId)
-                .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + turnoId));
-        turno.setEstado(estado);
-        return turnoRepository.save(turno);
-    }
-
-    /**
      * Actualiza la información de un cobro existente.
      * @param id El ID del cobro a actualizar.
      * @param cobro Los nuevos datos del cobro.
      * @return El cobro actualizado.
-     * @throws IllegalArgumentException Si no se encuentra un cobro con el ID proporcionado o si el turno asociado no está completado.
      */
     public Cobro updateCobro(Long id, Cobro cobro) {
         Cobro existingCobro = cobroRepository.findById(id)
@@ -99,26 +79,10 @@ public class CobroService {
         if (cobro.getFecha() != null) {
             existingCobro.setFecha(cobro.getFecha());
         }
-        if (cobro.getTurno() != null && cobro.getTurno().getId() != null) {
-            Turno turno = validarTurnoCompletado(cobro.getTurno().getId());
-            existingCobro.setTurno(turno);
+        if (cobro.getTurno() != null) {
+            existingCobro.setTurno(cobro.getTurno());
         }
 
         return cobroRepository.save(existingCobro);
-    }
-
-    /**
-     * Valida que el turno esté completado antes de asociarlo a un cobro.
-     * @param turnoId El ID del turno a validar.
-     * @return El turno validado.
-     * @throws IllegalArgumentException Si el turno no está completado o no existe.
-     */
-    private Turno validarTurnoCompletado(Long turnoId) {
-        Turno turno = turnoRepository.findById(turnoId)
-                .orElseThrow(() -> new IllegalArgumentException("Turno no encontrado con ID: " + turnoId));
-        if (!ESTADO_COMPLETADO.equals(turno.getEstado())) {
-            throw new IllegalArgumentException("El turno debe estar completado para asociarlo al cobro.");
-        }
-        return turno;
     }
 }
