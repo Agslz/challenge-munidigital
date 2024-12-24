@@ -1,7 +1,8 @@
+<p align="center">
+  <img src="/images/LogoMuniDigital.png" alt="Diagrama de Clases">
+</p>
 
 # Documentación de la API Washer
-
-![Diagrama de Clases](/images/LogoMuniDigital.png)
 
 ## Descripción
 La API Washer permite gestionar clientes, vehículos, turnos (citas) y cobros asociados a un servicio de lavado de autos. A través de esta API, es posible realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las entidades principales y manejar las relaciones entre ellas.
