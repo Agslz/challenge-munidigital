@@ -143,7 +143,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNTAwODY0NywiZXhwIjoxNzM1MDQ0NjQ3fQ.FwtZPIa2k60DSNEAL4AHduahTKIW6XLR0y079OEFLHk",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNDk5ODY1OCwiZXhwIjoxNzM1MDM0NjU4fQ.CA3WxKVmmt8QA_pm2cqUc5tgkh8MAfUNCgW5F9TGuqk",
 						"type": "string"
 					}
 				]
@@ -307,38 +307,6 @@
 						}
 					},
 					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNTAwODY0NywiZXhwIjoxNzM1MDQ0NjQ3fQ.FwtZPIa2k60DSNEAL4AHduahTKIW6XLR0y079OEFLHk",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
 				}
 			]
 		},
@@ -506,38 +474,6 @@
 					},
 					"response": []
 				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNTAwODY0NywiZXhwIjoxNzM1MDQ0NjQ3fQ.FwtZPIa2k60DSNEAL4AHduahTKIW6XLR0y079OEFLHk",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
 			]
 		},
 		{
@@ -644,64 +580,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Eliminar un cobro",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:8080/api/cobros/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"cobros",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNTAwODY0NywiZXhwIjoxNzM1MDQ0NjQ3fQ.FwtZPIa2k60DSNEAL4AHduahTKIW6XLR0y079OEFLHk",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
 				}
 			]
 		},
@@ -746,7 +624,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNTAwODU3MSwiZXhwIjoxNzM1MDQ0NTcxfQ.QDb5ikqCdpeQFArxT4fclyFNu9pXdnbPts4YdyV26Fk",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczNDk5OTUyMiwiZXhwIjoxNzM1MDM1NTIyfQ.CylpQhDwNYkKkToBXZs5SDL1GiezxFl_DhLoX6IU2Nw",
 				"type": "string"
 			}
 		]
