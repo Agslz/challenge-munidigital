@@ -1,6 +1,8 @@
 
 # Documentación de la API Washer
 
+![Diagrama de Clases](/images/LogoMuniDigital.png)
+
 ## Descripción
 La API Washer permite gestionar clientes, vehículos, turnos (citas) y cobros asociados a un servicio de lavado de autos. A través de esta API, es posible realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre las entidades principales y manejar las relaciones entre ellas.
 
@@ -139,13 +141,18 @@ Con la variable de entorno configurada en Postman, puedes realizar solicitudes p
 
 **Ejemplo cURL**:
 
-```bash
-curl -X GET http://localhost:8080/api/clientes \
--H "Authorization: Bearer $TOKEN"
-```
+   ```bash
+   curl -X GET http://localhost:8080/api/clientes \
+   -H "Authorization: Bearer $TOKEN"
+   ```
 
-Ejecuta la solicitud y verifica la respuesta.
+## Colección de Postman
 
+##### En la imagen se muestra un ejemplo del uso de la colección de Postman que he preparado específicamente para esta API. Adjunto el archivo JSON que contiene todas las solicitudes agrupadas por funcionalidad, incluyendo clientes, vehículos, turnos y cobros. Puedes descargarlo desde [este enlace](utils/Challenge%20MuniDigital.postman_collection.json).
+
+##### Una vez importada la colección en Postman, configura el token JWT a nivel de la colección para que todas las solicitudes hijas (clientes, vehículos, turnos, etc.) hereden automáticamente esta configuración. Esto permitirá realizar las pruebas de manera más eficiente y sin necesidad de incluir manualmente el token en cada solicitud.
+
+![Postman](/images/Postman.png)
 
 # API Endpoints
 
