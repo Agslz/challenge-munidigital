@@ -150,7 +150,7 @@ Con la variable de entorno configurada en Postman, puedes realizar solicitudes p
 
 ##### En la imagen se muestra un ejemplo del uso de la colección de Postman que he preparado específicamente para esta API. Adjunto el archivo JSON que contiene todas las solicitudes agrupadas por funcionalidad, incluyendo clientes, vehículos, turnos y cobros. Puedes descargarlo desde [este enlace](utils/Challenge%20MuniDigital.postman_collection.json).
 
-##### Una vez importada la colección en Postman, configura el token JWT a nivel de la colección para que todas las solicitudes hijas (clientes, vehículos, turnos, etc.) hereden automáticamente esta configuración. Esto permitirá realizar las pruebas de manera más eficiente y sin necesidad de incluir manualmente el token en cada solicitud.
+##### Una vez importada la colección en Postman, configura el token JWT en las colecciones (Clientes, Vehículos, Turnos y Cobros). Esto permitirá realizar las pruebas de manera más eficiente y sin necesidad de incluir manualmente el token en cada solicitud.
 
 ![Postman](/images/Postman.png)
 
