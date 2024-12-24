@@ -24,9 +24,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) // Deshabilitar CSRF para simplificar las pruebas
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Permitir acceso a autenticación sin token
+                        .requestMatchers(
+                                "/api/auth/**",       // Endpoints de autenticación
+                                "/swagger-ui/**",     // Swagger UI
+                                "/v3/api-docs/**",    // OpenAPI Docs
+                                "/swagger-ui.html",   // Página principal de Swagger
+                                "/api-docs/**"        // Swagger configuración
+                        ).permitAll()
                         .anyRequest().authenticated() // Proteger todos los demás endpoints
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Registrar el filtro

@@ -32,6 +32,13 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        // Ignorar rutas específicas como Swagger y OpenAPI Docs
+        String servletPath = request.getServletPath();
+        if (servletPath.startsWith("/swagger-ui") || servletPath.startsWith("/v3/api-docs") || servletPath.startsWith("/swagger-ui.html")) {
+            chain.doFilter(request, response);
+            return; // Salir del filtro
+        }
+
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
