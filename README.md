@@ -75,6 +75,8 @@ El siguiente diagrama ilustra las relaciones entre las entidades principales de 
 
 ### El backend estará disponible en: http://localhost:8080/.
 
+### Swagger UI estará disponible en: http://localhost:8080/swagger-ui/index.html.
+
 **Para detener y remover los contenedores, utiliza el siguiente comando:**
     
 ```bash
