@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Controlador REST para autenticación y generación de JWT.
+ * Controlador REST que gestiona la autenticación de usuarios y la generación de tokens JWT.
+ * Proporciona un endpoint para iniciar sesión y obtener un token de autenticación.
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -24,10 +25,16 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     /**
-     * Endpoint para iniciar sesión y generar un token JWT.
+     * Endpoint POST para autenticar a un usuario y generar un token JWT.
      *
-     * @param loginRequest Solicitud de inicio de sesión con username y password.
-     * @return Token JWT en caso de autenticación exitosa.
+     * @param loginRequest Objeto que contiene las credenciales del usuario (username y password).
+     * @return Un mapa con el token JWT generado si la autenticación es exitosa.
+     * @throws RuntimeException en caso de credenciales inválidas.
+     *
+     * Flujo:
+     * 1. Se autentica al usuario con el AuthenticationManager.
+     * 2. Si las credenciales son válidas, se genera un token JWT asociado al username.
+     * 3. El token se retorna como parte de la respuesta en formato JSON.
      */
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody LoginRequest loginRequest) {
@@ -49,12 +56,13 @@ public class AuthController {
             return response;
 
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Credenciales inválidas.");
+            throw new RuntimeException("Credenciales inválidas."); // Error en caso de autenticación fallida
         }
     }
 
     /**
-     * Clase interna para manejar el cuerpo de la solicitud de inicio de sesión.
+     * Clase interna que representa la estructura del cuerpo de la solicitud de inicio de sesión.
+     * Incluye los campos de username y password requeridos para la autenticación.
      */
     public static class LoginRequest {
         private String username;

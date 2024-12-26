@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controlador REST para la gestión de cobros.
- * Proporciona endpoints para operaciones CRUD sobre la entidad Cobro y para actualizar el estado de Turno.
+ * Controlador REST para gestionar operaciones relacionadas con la entidad Cobro.
+ * Proporciona endpoints para crear, leer, actualizar y eliminar cobros, así como actualizar el estado de turnos asociados.
  */
 @RestController
 @RequestMapping("/api/cobros")
@@ -25,9 +25,10 @@ public class CobroController {
     private TurnoService turnoService;
 
     /**
-     * Crea un nuevo cobro.
-     * @param cobro Datos validados del cobro a crear.
-     * @return ResponseEntity con el cobro creado.
+     * Endpoint para crear un nuevo cobro.
+     *
+     * @param cobro Objeto Cobro validado que contiene los datos del cobro a crear.
+     * @return {@link ResponseEntity} con el cobro creado y un código de estado 201 (CREATED).
      */
     @PostMapping
     public ResponseEntity<Cobro> createCobro(@Valid @RequestBody Cobro cobro) {
@@ -36,9 +37,10 @@ public class CobroController {
     }
 
     /**
-     * Obtiene un cobro por su ID.
-     * @param id ID del cobro a buscar.
-     * @return ResponseEntity con el cobro encontrado.
+     * Endpoint para obtener un cobro por su ID.
+     *
+     * @param id Identificador único del cobro.
+     * @return {@link ResponseEntity} con el cobro encontrado o un estado 404 (NOT FOUND) si no existe.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Cobro> getCobroById(@PathVariable Long id) {
@@ -47,10 +49,11 @@ public class CobroController {
     }
 
     /**
-     * Actualiza el estado de un turno asociado a un cobro.
-     * @param id ID del turno a actualizar.
+     * Endpoint para actualizar el estado de un turno asociado a un cobro.
+     *
+     * @param id Identificador único del turno.
      * @param estado Nuevo estado del turno.
-     * @return ResponseEntity con el estado de la operación.
+     * @return {@link ResponseEntity} con un código de estado 204 (NO CONTENT) si la operación es exitosa.
      */
     @PutMapping("/{id}/estado")
     public ResponseEntity<Void> updateEstadoTurno(@PathVariable Long id, @RequestParam String estado) {
@@ -59,8 +62,9 @@ public class CobroController {
     }
 
     /**
-     * Obtiene una lista de todos los cobros.
-     * @return ResponseEntity con la lista de cobros.
+     * Endpoint para obtener la lista de todos los cobros.
+     *
+     * @return {@link ResponseEntity} con una lista de todos los cobros registrados.
      */
     @GetMapping
     public ResponseEntity<List<Cobro>> getAllCobros() {
@@ -69,9 +73,10 @@ public class CobroController {
     }
 
     /**
-     * Elimina un cobro por su ID.
-     * @param id ID del cobro a eliminar.
-     * @return ResponseEntity con el estado de la operación.
+     * Endpoint para eliminar un cobro por su ID.
+     *
+     * @param id Identificador único del cobro a eliminar.
+     * @return {@link ResponseEntity} con un código de estado 204 (NO CONTENT) si la operación es exitosa.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCobro(@PathVariable Long id) {
@@ -80,10 +85,11 @@ public class CobroController {
     }
 
     /**
-     * Actualiza un cobro existente.
-     * @param id ID del cobro a actualizar.
-     * @param cobro Datos validados del cobro.
-     * @return ResponseEntity con el cobro actualizado.
+     * Endpoint para actualizar un cobro existente.
+     *
+     * @param id Identificador único del cobro a actualizar.
+     * @param cobro Objeto Cobro validado con los nuevos datos para actualizar.
+     * @return {@link ResponseEntity} con el cobro actualizado.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Cobro> updateCobro(@PathVariable Long id, @Valid @RequestBody Cobro cobro) {

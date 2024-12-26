@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controlador REST para la gestión de clientes.
- * Proporciona endpoints para operaciones CRUD sobre la entidad Cliente.
+ * Controlador REST para gestionar operaciones relacionadas con la entidad Cliente.
+ * Proporciona endpoints para crear, leer, actualizar y eliminar clientes (operaciones CRUD).
  */
 @RestController
 @RequestMapping("/api/clientes")
@@ -21,9 +21,10 @@ public class ClienteController {
     private ClienteService clienteService;
 
     /**
-     * Crea un nuevo cliente.
-     * @param cliente Datos validados del cliente a crear.
-     * @return ResponseEntity con el cliente creado.
+     * Endpoint para crear un nuevo cliente.
+     *
+     * @param cliente Objeto Cliente validado que contiene los datos del cliente a crear.
+     * @return {@link ResponseEntity} con el cliente creado y un código de estado 201 (CREATED).
      */
     @PostMapping
     public ResponseEntity<Cliente> createCliente(@Valid @RequestBody Cliente cliente) {
@@ -32,9 +33,10 @@ public class ClienteController {
     }
 
     /**
-     * Obtiene un cliente por su ID.
-     * @param id ID del cliente a buscar.
-     * @return ResponseEntity con el cliente encontrado o un estado de no encontrado.
+     * Endpoint para obtener un cliente por su ID.
+     *
+     * @param id Identificador único del cliente.
+     * @return {@link ResponseEntity} con el cliente encontrado o un estado 404 (NOT FOUND) si no existe.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> getClienteById(@PathVariable Long id) {
@@ -43,8 +45,9 @@ public class ClienteController {
     }
 
     /**
-     * Obtiene una lista de todos los clientes.
-     * @return Lista de clientes.
+     * Endpoint para obtener la lista de todos los clientes.
+     *
+     * @return {@link ResponseEntity} con una lista de todos los clientes.
      */
     @GetMapping
     public ResponseEntity<List<Cliente>> getAllClientes() {
@@ -53,9 +56,10 @@ public class ClienteController {
     }
 
     /**
-     * Elimina un cliente por su ID.
-     * @param id ID del cliente a eliminar.
-     * @return ResponseEntity con el estado de la operación.
+     * Endpoint para eliminar un cliente por su ID.
+     *
+     * @param id Identificador único del cliente a eliminar.
+     * @return {@link ResponseEntity} con un código de estado 204 (NO CONTENT) si la operación es exitosa.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCliente(@PathVariable Long id) {
@@ -64,10 +68,11 @@ public class ClienteController {
     }
 
     /**
-     * Actualiza un cliente existente.
-     * @param id ID del cliente a actualizar.
-     * @param cliente Datos validados del cliente.
-     * @return ResponseEntity con el cliente actualizado.
+     * Endpoint para actualizar un cliente existente.
+     *
+     * @param id Identificador único del cliente a actualizar.
+     * @param cliente Objeto Cliente validado con los nuevos datos para actualizar.
+     * @return {@link ResponseEntity} con el cliente actualizado.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {

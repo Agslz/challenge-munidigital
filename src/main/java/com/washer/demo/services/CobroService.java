@@ -11,8 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Servicio para gestionar operaciones CRUD en la entidad Cobro y actualizar el estado de Turno.
- * Este servicio encapsula la lógica de negocio para el manejo de cobros.
+ * Servicio para gestionar las operaciones relacionadas con la entidad Cobro.
+ * Incluye la lógica de negocio para crear, leer, actualizar y eliminar cobros,
+ * y permite actualizar la información asociada a los turnos.
  */
 @Service
 @Transactional
@@ -25,20 +26,21 @@ public class CobroService {
     private TurnoRepository turnoRepository;
 
     /**
-     * Guarda un cobro en la base de datos.
-     * @param cobro El cobro a guardar.
-     * @return El cobro guardado con su ID asignado.
+     * Guarda un nuevo cobro en la base de datos.
+     *
+     * @param cobro El objeto Cobro a guardar.
+     * @return El cobro guardado con su ID asignado automáticamente.
      */
     public Cobro saveCobro(Cobro cobro) {
-        // Se elimina la validación del turno
         return cobroRepository.save(cobro);
     }
 
     /**
      * Recupera un cobro por su ID.
-     * @param id El ID del cobro a buscar.
+     *
+     * @param id El identificador único del cobro a buscar.
      * @return El cobro encontrado.
-     * @throws IllegalArgumentException Si no se encuentra un cobro con el ID proporcionado.
+     * @throws IllegalArgumentException Si no existe un cobro con el ID proporcionado.
      */
     public Cobro getCobro(Long id) {
         return cobroRepository.findById(id)
@@ -46,8 +48,9 @@ public class CobroService {
     }
 
     /**
-     * Obtiene una lista de todos los cobros registrados.
-     * @return Una lista de cobros.
+     * Obtiene una lista de todos los cobros registrados en la base de datos.
+     *
+     * @return Lista de cobros existentes.
      */
     public List<Cobro> getAllCobros() {
         return cobroRepository.findAll();
@@ -55,7 +58,9 @@ public class CobroService {
 
     /**
      * Elimina un cobro por su ID.
-     * @param id El ID del cobro a eliminar.
+     *
+     * @param id El identificador único del cobro a eliminar.
+     * @throws IllegalArgumentException Si no existe un cobro con el ID proporcionado.
      */
     public void deleteCobro(Long id) {
         Cobro cobro = cobroRepository.findById(id)
@@ -65,14 +70,17 @@ public class CobroService {
 
     /**
      * Actualiza la información de un cobro existente.
-     * @param id El ID del cobro a actualizar.
-     * @param cobro Los nuevos datos del cobro.
+     *
+     * @param id El identificador único del cobro a actualizar.
+     * @param cobro Objeto Cobro con los datos actualizados.
      * @return El cobro actualizado.
+     * @throws IllegalArgumentException Si no existe un cobro con el ID proporcionado.
      */
     public Cobro updateCobro(Long id, Cobro cobro) {
         Cobro existingCobro = cobroRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cobro no encontrado con ID: " + id));
 
+        // Actualiza los campos no nulos del cobro proporcionado
         if (cobro.getMonto() != null) {
             existingCobro.setMonto(cobro.getMonto());
         }

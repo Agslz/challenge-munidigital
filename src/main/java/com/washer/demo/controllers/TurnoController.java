@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controlador REST para la gestión de turnos.
- * Proporciona endpoints para operaciones CRUD sobre la entidad Turno.
+ * Controlador REST para gestionar operaciones relacionadas con la entidad Turno.
+ * Proporciona endpoints para crear, leer, actualizar y eliminar turnos (operaciones CRUD),
+ * así como actualizar el estado de un turno específico.
  */
 @RestController
 @RequestMapping("/api/turnos")
@@ -21,9 +22,10 @@ public class TurnoController {
     private TurnoService turnoService;
 
     /**
-     * Crea un nuevo turno.
-     * @param turno Datos validados del turno a crear.
-     * @return ResponseEntity con el turno creado.
+     * Endpoint para crear un nuevo turno.
+     *
+     * @param turno Objeto Turno validado que contiene los datos del turno a crear.
+     * @return {@link ResponseEntity} con el turno creado y un código de estado 201 (CREATED).
      */
     @PostMapping
     public ResponseEntity<Turno> createTurno(@Valid @RequestBody Turno turno) {
@@ -32,9 +34,10 @@ public class TurnoController {
     }
 
     /**
-     * Obtiene un turno por su ID.
-     * @param id ID del turno a buscar.
-     * @return ResponseEntity con el turno encontrado.
+     * Endpoint para obtener un turno por su ID.
+     *
+     * @param id Identificador único del turno.
+     * @return {@link ResponseEntity} con el turno encontrado o un estado 404 (NOT FOUND) si no existe.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Turno> getTurnoById(@PathVariable Long id) {
@@ -43,8 +46,9 @@ public class TurnoController {
     }
 
     /**
-     * Obtiene una lista de todos los turnos.
-     * @return ResponseEntity con la lista de turnos.
+     * Endpoint para obtener la lista de todos los turnos.
+     *
+     * @return {@link ResponseEntity} con una lista de todos los turnos registrados.
      */
     @GetMapping
     public ResponseEntity<List<Turno>> getAllTurnos() {
@@ -53,9 +57,10 @@ public class TurnoController {
     }
 
     /**
-     * Elimina un turno por su ID.
-     * @param id ID del turno a eliminar.
-     * @return ResponseEntity con el estado de la operación.
+     * Endpoint para eliminar un turno por su ID.
+     *
+     * @param id Identificador único del turno a eliminar.
+     * @return {@link ResponseEntity} con un código de estado 204 (NO CONTENT) si la operación es exitosa.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTurno(@PathVariable Long id) {
@@ -64,10 +69,11 @@ public class TurnoController {
     }
 
     /**
-     * Actualiza el estado de un turno.
-     * @param id ID del turno a actualizar.
+     * Endpoint para actualizar el estado de un turno específico.
+     *
+     * @param id Identificador único del turno.
      * @param estado Nuevo estado del turno.
-     * @return ResponseEntity con el estado de la operación.
+     * @return {@link ResponseEntity} con un código de estado 204 (NO CONTENT) si la operación es exitosa.
      */
     @PutMapping("/{id}/estado")
     public ResponseEntity<Void> updateEstadoTurno(@PathVariable Long id, @RequestParam String estado) {
@@ -76,10 +82,11 @@ public class TurnoController {
     }
 
     /**
-     * Actualiza la información de un turno existente.
-     * @param id ID del turno a actualizar.
-     * @param turno Datos validados del turno.
-     * @return ResponseEntity con el turno actualizado.
+     * Endpoint para actualizar la información de un turno existente.
+     *
+     * @param id Identificador único del turno a actualizar.
+     * @param turno Objeto Turno validado con los nuevos datos para actualizar.
+     * @return {@link ResponseEntity} con el turno actualizado.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Turno> updateTurno(@PathVariable Long id, @Valid @RequestBody Turno turno) {
